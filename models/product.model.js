@@ -28,7 +28,7 @@ const productSchema = mongoose.Schema({
         type:[],
         default: []
     },
-    promotionalPrice: {
+    sale: {
         type: Number,
         default: 0
     },

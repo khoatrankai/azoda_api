@@ -83,7 +83,7 @@ export const productBrand = async(req,res,next) => {
                         name: '$name',
                         code: '$code',
                         price: '$price',
-                        promotionalPrice: '$promotionalPrice',
+                        sale: '$sale',
                         successfulPurchase: '$successfulPurchase',
     
                     }
@@ -179,7 +179,7 @@ export const productCategory = async(req,res,next) => {
                         name: '$name',
                         code: '$code',
                         price: '$price',
-                        promotionalPrice: '$promotionalPrice',
+                        sale: '$sale',
                         successfulPurchase: '$successfulPurchase',
     
                     }
