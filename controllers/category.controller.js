@@ -6,10 +6,7 @@ export const createCategory = async(req,res,next)=>{
         if(req.files.icon){
             req.body.icon = req.files.icon[0].destination.replace('./public','') +'/'+req.files.icon[0].filename
         }
-        if(req.body.topList === ''){
-            req.body.topList = []
-        }
-        const newCategory = new categoryModel({...req.body})
+        const newCategory = new categoryModel({...req.body,topList: []})
         await newCategory.save().then(savedData =>{
             res.status(200).json({success: true, message: 'dữ liệu lưu thành công'});
         }).catch(err =>{

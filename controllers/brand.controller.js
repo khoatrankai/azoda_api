@@ -7,10 +7,7 @@ export const createBrand = async(req,res,next)=>{
         if(req.files.logo){
             req.body.logo = req.files.logo[0].destination.replace('./public','') +'/'+req.files.logo[0].filename
         }
-        if(req.body.topList === ''){
-            req.body.topList = []
-        }
-        const newBrand = new brandModel({...req.body})
+        const newBrand = new brandModel({...req.body,topList: []})
         await newBrand.save().then(savedData =>{
             res.status(200).json({success: true, message: 'dữ liệu lưu thành công'});
         }).catch(err =>{
