@@ -30,7 +30,10 @@ export const getHome = async(req,res,next) => {
         let dataCategory = await categoryModel.find({},{createdAt: 0,updatedAt: 0})
         .populate('topList.product')
         .exec()
-        let dataSale = await productModel.find({}).sort({'sale': -1}).limit(10)
+        let dataSale = await productModel.find({},{sourceCode: 0}).populate('brand').populate('category').sort({'sale': -1}).limit(10).exec();
+        dataSale = dataSale.map(dt => {
+            return {...dt._doc,brand: dt.brand.name,category: dt.category.name}
+        })
         const dataSlider = await slideshowModel.find({},{createdAt: 0,updatedAt: 0})
         const dataPartner = await partnerModel.find({},{createdAt: 0,updatedAt: 0})
             res.status(200).json({success: true, data:{dataBrand: dataBrand,dataCategory: dataCategory,dataSlider: dataSlider,dataPartner: dataPartner,dataSale: dataSale} });

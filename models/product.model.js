@@ -73,5 +73,10 @@ const productSchema = mongoose.Schema({
         default:""
     }
 },{timestamps: true});
-
+// productSchema.virtual('brandName').get(async function() {
+//     const dataBrand = await productModel.findOne({_id: this._id}).populate('brand').exec();
+//     if(dataBrand){
+//         return dataBrand.brand.name
+//     }
+// });
 export default mongoose.model('Product',productSchema);
