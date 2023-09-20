@@ -247,7 +247,78 @@ export const getId = async(req,res,next) => {
         .populate('category')
         .populate('vat')
         .exec()
-        const dataProduct = await productModel.find({brand: data.brand._id,category: data.category_id},{sourceCode: 0}).limit(10)
+        const dataProduct = await productModel
+        .aggregate([
+            {
+                $match:{
+                    $and:[
+                        {
+                            $or:[
+                                {
+                                    category: {
+                                        $eq: data.category._id
+                                    }
+                                },
+                                {
+                                    brand: {
+                                        $eq: data.brand._id
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            _id:{
+                                $ne: data._id
+                            }
+                        }
+                    ]
+                }
+              },
+              {
+                        $limit: 10
+              },
+                {
+                    $lookup: {
+                      from: 'brands', 
+                      localField: 'brand',
+                      foreignField: '_id',
+                      as: 'brand'
+                    }
+                  },{
+                    $unwind: "$brand"
+                  },
+                  {
+                      $lookup: {
+                        from: 'categories', 
+                        localField: 'category',
+                        foreignField: '_id',
+                        as: 'category'
+                      }
+                    },{
+                      $unwind: "$category"
+                    }
+                  ,
+                  
+                  {
+                    $project: {
+                        '_id': 1,
+                        'code': 1,
+                        'name': 1,
+                        'price': 1,
+                        'quantity': 1,
+                        'avatar': 1,
+                        'listImage': 1,
+                        'sale': 1,
+                        'enable': 1,
+                        'brand': '$brand.name',
+                        'category': '$category.name',
+                        'successfulPurchase': 1
+                    }
+                  }
+                  
+            
+    ]).exec()
+        // .find({brand: data.brand._id,category: data.category_id,'_id': {$ne: req.params.id}},{sourceCode: 0}).limit(10)
         res.status(200).json({success: true, data: {...data._doc,productRelate: dataProduct}});
 
 

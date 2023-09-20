@@ -34,9 +34,57 @@ export const getHome = async(req,res,next) => {
         dataSale = dataSale.map(dt => {
             return {...dt._doc,brand: dt.brand.name,category: dt.category.name}
         })
-        const dataProduct = await productModel.aggregate([
-                { $sample: { size: 31 }}, {$limit: 31}
+        let dataProduct = await productModel.aggregate([
+                { 
+                    $sample: { 
+                        size: 31 
+                    }
+                }, 
+                    {
+                        $limit: 31
+                    },
+                    {
+                        $lookup: {
+                          from: 'brands', 
+                          localField: 'brand',
+                          foreignField: '_id',
+                          as: 'brand'
+                        }
+                      },{
+                        $unwind: "$brand"
+                      },
+                      {
+                          $lookup: {
+                            from: 'categories', 
+                            localField: 'category',
+                            foreignField: '_id',
+                            as: 'category'
+                          }
+                        },{
+                          $unwind: "$category"
+                        }
+                      ,
+                      {
+                        $project: {
+                            '_id': 1,
+                            'code': 1,
+                            'name': 1,
+                            'price': 1,
+                            'quantity': 1,
+                            'avatar': 1,
+                            'listImage': 1,
+                            'sale': 1,
+                            'enable': 1,
+                            'brand': '$brand.name',
+                            'category': '$category.name',
+                            'successfulPurchase': 1
+                        }
+                      }
+                
         ]).exec();
+        // dataProduct = dataProduct.map(dt => {
+        //     return {...dt._doc,brand: dt.brand.name,category: dt.category.name}
+        // })
         const dataSlider = await slideshowModel.find({},{createdAt: 0,updatedAt: 0})
         const dataPartner = await partnerModel.find({},{createdAt: 0,updatedAt: 0})
             res.status(200).json({success: true, data:{dataBrand: dataBrand,dataCategory: dataCategory,dataSlider: dataSlider,dataPartner: dataPartner,dataSale: dataSale,dataProduct: dataProduct} });
