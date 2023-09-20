@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config({ path: '.env' })
 const connectDB = async()=>{
     try{
-        const con = await mongoose.connect(process.env.MG_CON,{
+        const con = await mongoose.connect(process.env.MG_CON_AZODA,{
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })

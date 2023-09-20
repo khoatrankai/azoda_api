@@ -34,9 +34,12 @@ export const getHome = async(req,res,next) => {
         dataSale = dataSale.map(dt => {
             return {...dt._doc,brand: dt.brand.name,category: dt.category.name}
         })
+        const dataProduct = await productModel.aggregate([
+                { $sample: { size: 31 }}, {$limit: 31}
+        ]).exec();
         const dataSlider = await slideshowModel.find({},{createdAt: 0,updatedAt: 0})
         const dataPartner = await partnerModel.find({},{createdAt: 0,updatedAt: 0})
-            res.status(200).json({success: true, data:{dataBrand: dataBrand,dataCategory: dataCategory,dataSlider: dataSlider,dataPartner: dataPartner,dataSale: dataSale} });
+            res.status(200).json({success: true, data:{dataBrand: dataBrand,dataCategory: dataCategory,dataSlider: dataSlider,dataPartner: dataPartner,dataSale: dataSale,dataProduct: dataProduct} });
 
     } catch (error) {
         res.status(200).json({success: false, message: "Lỗi máy chủ"});

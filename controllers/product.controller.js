@@ -241,19 +241,18 @@ export const getList = async(req,res,next) => {
 }
 export const getId = async(req,res,next) => {
     try {
-        await productModel.findOne({_id:req.params.id})
+        
+        const data = await productModel.findOne({_id:req.params.id})
         .populate('brand')
         .populate('category')
         .populate('vat')
         .exec()
-        .then(data =>{
-            res.status(200).json({success: true, data: data});
-        }).catch(err =>{
-            res.status(200).json({success: false, message: 'dữ liệu không thể lấy'});
-        })
+        const dataProduct = await productModel.find({brand: data.brand._id,category: data.category_id},{sourceCode: 0}).limit(10)
+        res.status(200).json({success: true, data: {...data._doc,productRelate: dataProduct}});
+
 
     } catch (error) {
-
+        res.status(200).json({success: false, message: 'lỗi máy chủ'});
     }
 }
 
