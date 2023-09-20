@@ -29,7 +29,7 @@ export const getHome = async(req,res,next) => {
         let dataCategory = await categoryModel.find({},{createdAt: 0,updatedAt: 0})
         .populate('topList.product')
         .exec()
-
+        let dataSale = await productModel.find({}).sort({'sale': -1}).limit(10)
         const dataSlider = await slideshowModel.find({},{createdAt: 0,updatedAt: 0})
         const dataPartner = await partnerModel.find({},{createdAt: 0,updatedAt: 0})
             dataBrand = await Promise.all(dataBrand.map(async dt => {
@@ -44,7 +44,7 @@ export const getHome = async(req,res,next) => {
                 return {...dt._doc,listProduct: listProduct,listBrand: listBrand}
 
             }))
-            res.status(200).json({success: true, data:{dataBrand: dataBrand,dataCategory: dataCategory,dataSlider: dataSlider,dataPartner: dataPartner} });
+            res.status(200).json({success: true, data:{dataBrand: dataBrand,dataCategory: dataCategory,dataSlider: dataSlider,dataPartner: dataPartner,dataSale: dataSale} });
 
     } catch (error) {
         res.status(200).json({success: false, message: "Lỗi máy chủ"});
