@@ -32,18 +32,6 @@ export const getHome = async(req,res,next) => {
         let dataSale = await productModel.find({}).sort({'sale': -1}).limit(10)
         const dataSlider = await slideshowModel.find({},{createdAt: 0,updatedAt: 0})
         const dataPartner = await partnerModel.find({},{createdAt: 0,updatedAt: 0})
-            dataBrand = await Promise.all(dataBrand.map(async dt => {
-                const listProduct = await dt.listProduct
-                const listCategory = await dt.listCategory
-                return {...dt._doc,listProduct: listProduct,listCategory: listCategory}
-
-            }))
-            dataCategory = await Promise.all(dataCategory.map(async dt => {
-                const listProduct = await dt.listProduct
-                const listBrand = await dt.listBrand
-                return {...dt._doc,listProduct: listProduct,listBrand: listBrand}
-
-            }))
             res.status(200).json({success: true, data:{dataBrand: dataBrand,dataCategory: dataCategory,dataSlider: dataSlider,dataPartner: dataPartner,dataSale: dataSale} });
 
     } catch (error) {
