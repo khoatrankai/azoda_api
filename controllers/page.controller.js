@@ -3,6 +3,7 @@ import slideshowModel from '../models/slideshow.model.js'
 import categoryModel from '../models/category.model.js'
 import brandModel from '../models/brand.model.js'
 import partnerModel from '../models/partner.model.js'
+import productModel from '../models/product.model.js'
 
 
 
