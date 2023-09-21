@@ -32,13 +32,15 @@ export const getList = async(req,res,next) => {
                 return {...dt._doc,listProduct: listProduct,listCategory: listCategory}
 
             }))
-            console.log(newData)
             res.status(200).json({success: true, data: newData});
 
-        }
+        }else{
             res.status(200).json({success: false, message: 'dữ liệu không thể lấy'});
 
+        }
+
     } catch (error) {
+        res.status(200).json({success: false, message: 'lỗi máy chủ'});
 
     }
 }
@@ -52,8 +54,9 @@ export const getId = async(req,res,next) => {
             const listProduct = await data.listProduct
             res.status(200).json({success: true, data: {...data._doc,listCategory:listCategory,listProduct: listProduct}});
 
-        }
+        }else{
             res.status(200).json({success: false, message: 'dữ liệu không thể lấy'});
+        }
     
 
     } catch (error) {
