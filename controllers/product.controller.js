@@ -225,7 +225,7 @@ export const createProduct = async(req,res,next)=>{
 
 export const getList = async(req,res,next) => {
     try {
-        await productModel.find({},{createdAt: 0,updatedAt: 0})
+        await productModel.find({})
         .populate('brand')
         .populate('category')
         .exec()
