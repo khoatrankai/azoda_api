@@ -13,8 +13,39 @@ dotenv.config({ path: '.env' })
 
 
 
+export const signUpCustomer = async(req,res,next)=>{
+    try {
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(req.body.password, salt);
+        const newCustomer = new customerModel({...req.body,password: hash})
+        await newCustomer.save().then(savedData =>{
+            res.status(200).json({success: true, message: {email: savedData.email,password: req.body.password}});
+        }).catch(err =>{
+            res.status(200).json({success: false, message: 'dữ liệu lưu ko thành công'});
+        })
 
+    } catch (error) {
+        res.status(200).json({success: false, message: 'Lỗi máy chủ'});
+    }
+}
 
+export const signUpAdmin = async(req,res,next)=>{
+    try {
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(req.body.password, salt);
+        const newAdmin = new adminModel({...req.body,password: hash})
+        await newAdmin.save().then(savedData =>{
+            res.status(200).json({success: true, message: 'dữ liệu lưu thành công'});
+        }).catch(err =>{
+            res.status(200).json({success: false, message: 'dữ liệu lưu ko thành công'});
+        })
+       
+         
+
+    } catch (error) {
+        res.status(200).json({success: false, message: 'Lỗi máy chủ'});
+    }
+}
 
 export const logInCustomer = async(req,res,next) => {
     try {

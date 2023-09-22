@@ -6,14 +6,14 @@ dotenv.config({ path: '.env' })
 
 export const createCustomer = async(req,res,next)=>{
     try {
-        if(req.files.avatar){
-            req.body.avatar = req.files.avatar[0].destination.replace('./public','') +'/'+req.files.avatar[0].filename
-        }
-        if(req.body.addressList === ''){
-            req.body.addressList = []
-        }else{
-            req.body.addressList = JSON.parse(req.body.addressList)
-        }
+        // if(req.files.avatar){
+        //     req.body.avatar = req.files.avatar[0].destination.replace('./public','') +'/'+req.files.avatar[0].filename
+        // }
+        // if(req.body.addressList === ''){
+        //     req.body.addressList = []
+        // }else{
+        //     req.body.addressList = JSON.parse(req.body.addressList)
+        // }
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
         const newCustomer = new customerModel({...req.body,password: hash})

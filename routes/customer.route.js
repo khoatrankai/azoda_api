@@ -4,7 +4,8 @@ import {createCustomer,deleteId,getId,getList,updateAddress,updateId,updateiAddr
 const route = express.Router()
 
 route.get('/list',getList)
-route.post('/create',upload('customers').fields([{name: 'avatar',maxCount: 1}]),createCustomer)
+// route.post('/create',upload('customers').fields([{name: 'avatar',maxCount: 1}]),createCustomer)
+route.post('/create',createCustomer)
 route.put('/update/:id',upload('customers').fields([{name: 'avatar',maxCount: 1}]),updateId)
 route.delete('/delete/:id',deleteId)
 route.get('/list/:id',getId)
