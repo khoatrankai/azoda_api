@@ -82,8 +82,14 @@ export const logInCustomer = async(req,res,next) => {
         })
         res.status(200).json({
             success: true,
+            idUser: user._id,
             accessToken,
             refreshToken,
+            userData: {
+                _id: user._id,
+                avatar: user.avatar,
+                email: user.email
+            },
             message: "Logged in sucessfully"
         });
     } catch (err) {
@@ -95,11 +101,11 @@ export const accessLoginCustomer = async(req,res,next) => {
     try{
         verifyCustomerRefreshToken(req.body.refreshToken)
         .then(({ tokenDetails }) => {
-            const payload = { id: tokenDetails.id, email: tokenDetails.email };
+            const payload = { _id: tokenDetails.id, email: tokenDetails.email,avatar: tokenDetails.avatar };
             const accessToken = jwt.sign(
                 payload,
                 process.env.R_TOKEN,
-                { expiresIn: "14m" }
+                { expiresIn: "5m" }
             );
             res.status(200).json({
                 success: true,
@@ -107,9 +113,17 @@ export const accessLoginCustomer = async(req,res,next) => {
                 message: "Access token created successfully",
             });
         })
-        .catch((err) => res.status(200).json({success: false,message: err}));
+        .catch((err) => res.status(401).json({success: false,message: err}));
     }catch(err){
-        res.status(200).json({success: false,message: err})
+        res.status(400).json({success: false,message: err})
+    }
+}
+
+export const getUser = async(req,res,next) => {
+    try{
+       res.status(200).json({success: true,data: req.decoded})
+    }catch(err){
+        res.status(400).json({success: false,message: err})
     }
 }
 

@@ -27,6 +27,36 @@ export const getList = async(req,res,next) => {
 
     }
 }
+
+export const getUseDiscount = async(req,res,next) => {
+    try {
+        const products = req.body.productList
+        let data = await discountModel.find({})
+        data = data.filter(dt => {
+            const list = dt.productList.map(dt => {
+                return dt.product
+            }).toString()
+            return checkList(list,products)
+        })
+        if(data.length === 0){
+            res.status(200).json({success: false, message: ' không tìm thấy dữ liệu'});
+        }
+        res.status(200).json({success: true, data: data});
+    } catch (error) {
+        res.status(404).json({success: false, message: ' không tìm thấy dữ liệu'});
+    }
+}
+
+const checkList = (discount,listProduct) => {
+    let check = false
+    listProduct.forEach(dt => {
+        if(discount.search(dt) != -1){
+            check = true
+        }
+    })
+    return check
+}
+
 export const getId = async(req,res,next) => {
     try {
         await discountModel.findOne({_id:req.params.id}).populate('productList.product').then(data =>{

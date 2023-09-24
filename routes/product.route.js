@@ -1,7 +1,7 @@
 import express from 'express'
 import multer from 'multer'
 import upload from '../utils/uploadImage.js'
-import {createProduct,listCategotyBrand,productBrand,productCategory,deleteId,getId,getList,updateId,getProductsBrand,getProductsCategory,filterProduct} from '../controllers/product.controller.js'
+import {createProduct,listCategotyBrand,productBrand,productCategory,deleteId,getId,getList,updateId,getProductsBrand,getProductsCategory,filterProduct,searchProduct} from '../controllers/product.controller.js'
 const route = express.Router()
 // const storage = multer.diskStorage({
 //     destination: (req,file,cb) => {
@@ -26,6 +26,6 @@ route.get('/listcategorybrand',listCategotyBrand)
 route.get('/productcategory',productCategory)
 route.get('/list-brand/:brandId',getProductsBrand)
 route.get('/list-category/:categoryId',getProductsCategory)
-
+route.get('/search/:keyword',searchProduct)
 
 export default route

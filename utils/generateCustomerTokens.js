@@ -6,11 +6,11 @@ dotenv.config({ path: '.env' })
 
 const generateTokens = async (user) => {
     try {
-        const payload = { id: user._id, email: user.email };
+        const payload = { _id: user._id, email: user.email,avatar: user.avatar };
         const accessToken = jwt.sign(
             payload,
             process.env.R_TOKEN,
-            { expiresIn: "15m" }
+            { expiresIn: "5m" }
         );
         const refreshToken = jwt.sign(
             payload,
