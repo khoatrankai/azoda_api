@@ -339,7 +339,7 @@ export const searchProduct = async(req,res,next) => {
         
         ]).exec();
         newdata = await newdata.filter(dt => {
-            return findKey(req.params.keyword.toLowerCase(),dt.key.toLowerCase())
+            return findKey(req.body.keyword.toLowerCase(),dt.key.toLowerCase())
         })
         if(newdata.length > 0)
         {

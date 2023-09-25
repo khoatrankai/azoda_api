@@ -5,7 +5,7 @@ dotenv.config({ path: '.env' })
 
 const generateTokens = async (user) => {
     try {
-        const payload = { id: user._id, username: user.username };
+        const payload = { _id: user._id, username: user.username,avatar: user.avatar,name: user.name };
         const accessToken = jwt.sign(
             payload,
             process.env.R_TOKEN,

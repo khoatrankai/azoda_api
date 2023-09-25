@@ -88,7 +88,8 @@ export const logInCustomer = async(req,res,next) => {
             userData: {
                 _id: user._id,
                 avatar: user.avatar,
-                email: user.email
+                email: user.email,
+                name: user.name
             },
             message: "Logged in sucessfully"
         });
@@ -101,7 +102,7 @@ export const accessLoginCustomer = async(req,res,next) => {
     try{
         verifyCustomerRefreshToken(req.body.refreshToken)
         .then(({ tokenDetails }) => {
-            const payload = { _id: tokenDetails.id, email: tokenDetails.email,avatar: tokenDetails.avatar };
+            const payload = { _id: tokenDetails._id, email: tokenDetails.email,avatar: tokenDetails.avatar,name: tokenDetails.name };
             const accessToken = jwt.sign(
                 payload,
                 process.env.R_TOKEN,
@@ -143,8 +144,6 @@ export const logOutCustomer = async(req,res,next) => {
 
 export const logInAdmin = async(req,res,next) => {
     try {
-        console.log("vao",req.body)
-        // console.log(req.body)
         const user = await adminModel.findOne({ username: req.body.username });
         console.log(user)
         if (!user)
@@ -179,6 +178,12 @@ export const logInAdmin = async(req,res,next) => {
             success: true,
             accessToken,
             refreshToken,
+            userData: {
+                _id: user._id,
+                avatar: user.avatar,
+                username: user.username,
+                name: user.name
+            },
             message: "Logged in sucessfully"
         });
     } catch (err) {
@@ -190,11 +195,11 @@ export const accessLoginAdmin = async(req,res,next) => {
     try{
         verifyAdminRefreshToken(req.body.refreshToken)
         .then(({ tokenDetails }) => {
-            const payload = { id: tokenDetails.id, username: tokenDetails.username };
+            const payload = { _id: tokenDetails._id, username: tokenDetails.username,avatar: tokenDetails.avatar,name: tokenDetails.name };
             const accessToken = jwt.sign(
                 payload,
                 process.env.R_TOKEN,
-                { expiresIn: "14m" }
+                { expiresIn: "5m" }
             );
             res.status(200).json({
                 success: true,

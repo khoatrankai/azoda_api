@@ -152,8 +152,8 @@ export const updateId = async(req,res,next) => {
         }else{
             req.body.addressList = JSON.parse(req.body.addressList)
         }
-        const salt = bcrypt.genSaltSync(10);
-        req.body.password = bcrypt.hashSync(req.body.password, salt);
+        // const salt = bcrypt.genSaltSync(10);
+        // req.body.password = bcrypt.hashSync(req.body.password, salt);
         await customerModel.findByIdAndUpdate(
             req.params.id,
             { ...req.body },

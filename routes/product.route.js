@@ -26,6 +26,6 @@ route.get('/listcategorybrand',listCategotyBrand)
 route.get('/productcategory',productCategory)
 route.get('/list-brand/:brandId',getProductsBrand)
 route.get('/list-category/:categoryId',getProductsCategory)
-route.get('/search/:keyword',searchProduct)
+route.post('/search',searchProduct)
 
 export default route
