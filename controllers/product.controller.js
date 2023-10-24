@@ -341,12 +341,12 @@ export const searchProduct = async(req,res,next) => {
         newdata = await newdata.filter(dt => {
             return findKey(req.body.keyword.toLowerCase(),dt.key.toLowerCase())
         })
-        if(newdata.length > 0)
-        {
-            res.status(200).json({success: true, data: newdata});
-        }else{
-            res.status(200).json({success: false, message: 'không có dữ liệu'});
-        }
+        // if(newdata.length > 0)
+        // {
+        //     res.status(200).json({success: true, data: newdata});
+        // }else{
+        //     res.status(200).json({success: false, message: 'không có dữ liệu'});
+        // }
 
     } catch (error) {
         res.status(400).json({success: false, message: 'lỗi máy chủ'});

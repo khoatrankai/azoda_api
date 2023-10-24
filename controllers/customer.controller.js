@@ -168,6 +168,45 @@ export const updateId = async(req,res,next) => {
 
     }}
 }
+
+export const updateIdImage = async(req,res,next) => {
+    try{
+        if(req.files.avatar){
+            req.body.avatar = req.files.avatar[0].destination.replace('./public','') +'/'+req.files.avatar[0].filename
+        }
+        await customerModel.findByIdAndUpdate(
+            req.params.id,
+            { ...req.body },
+            { new: true }
+        ).then(data => {
+            res.status(200).json({success: true, message: "cập nhật thành công"});
+        }).catch(err => {
+            res.status(200).json({success: true, message: "cập nhật ko thành công"});
+            
+        })
+    }catch{err => {
+
+    }}
+}
+
+export const rsPassId = async(req,res,next) => {
+    try{
+        const salt = bcrypt.genSaltSync(10);
+        req.body.password = bcrypt.hashSync(req.body.password, salt);
+        await customerModel.findByIdAndUpdate(
+            req.params.id,
+            { ...req.body },
+            { new: true }
+        ).then(data => {
+            res.status(200).json({success: true, message: "cập nhật thành công"});
+        }).catch(err => {
+            res.status(200).json({success: true, message: "cập nhật ko thành công"});
+            
+        })
+    }catch{err => {
+
+    }}
+}
 export const deleteId = async(req,res,next) =>{
     try{
         await customerModel.findByIdAndDelete(req.params.id).then(data =>{
